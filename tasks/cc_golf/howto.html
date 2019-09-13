@@ -1,0 +1,42 @@
+{% from "macros.html" import terminal %}
+<h2>Welcome!</h2>
+<p>
+    <strong>Thanks for playing our SpreadIT Code Golf!</strong> <br>
+    The task is simple: write the program solving the task described below and try to make it as small as possible.
+    <strong>Any byte counts!</strong> The system is counting spaces and new lines as wel ;)
+    On the main page you can insert your code and it will be run and tested on backend. You will receive feedback (error or success info)
+    and you can submit multiple times to improve your score (it will be overwritten based on your email). <br><br>
+
+    There are 5 languages to choose from: Python 3.6, Ruby 2.4, bash 4.4, PHP 7.1 and Node.js 8.9 <br> <br>
+
+    After successful attempt you will receive a random nickname, which we will call you by when announcing winners. You have to be present at the announcement
+    at Clearcode stand at 14:45 today to get the prize (try to remember you nickname, but we can verify with email as well). If you won't be present, the next person
+    in leaderboards will get the prize. <br><br>
+
+    Huge thanks to <a href="https://github.com/firemark/">firemark</a> of <a href="https://github.com/CodingDojoSilesia">Coding Dojo Silesia</a> for letting us use the code golf platform <3 <br><br>
+
+    <strong>Do you need more help? Maybe something is not working?</strong> Visit us at Clearcode stand on the conference and we will help you any way we can ;)
+</p>
+<h2>Description</h2>
+<p>
+    In the argument a program gets a test string. The code has to print:
+    {{ terminal(codes.example1) }}
+    The task comes with a twist though: <strong>no digits are allowed in the code</strong>
+    so you have to print 2019 (or access first argv argument) some other way ;)
+</p>
+<h2>Other rules</h2>
+<ol>
+    <li>Result must be printed in <strong>STDOUT</strong></li>
+    <li>Program gets from 1 argument (argv)</li>
+    <li><strong>Each</strong> line must have newline char (\n) at the end</li>
+    <li>The lines must not have any characters after newline char (\n)</li>
+    <li>If there are multiple first places (same amount of chars) the posting date will decide</li>
+</ol>
+<h2>examples</h2>
+<p>
+    {{ terminal(codes.example2) }}
+</p>
+<p>
+    {{ terminal(codes.example3) }}
+</p>
+<h2>Happy coding!</h2>
