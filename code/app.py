@@ -1,5 +1,6 @@
 import os
 import logging
+import re
 from functools import wraps
 from datetime import datetime
 
@@ -17,7 +18,7 @@ from const import (
 )
 from exceptions import CallError
 from logic import execute_cmd
-from db_logic import submit_score, get_heroes, add_score_log, get_score_logs
+from db_logic import submit_score, get_heroes, add_score_log, get_score_logs, get_username_by_email
 from db import db
 import task_loader
 
@@ -120,13 +121,27 @@ def readme_dude():
 def execute_order_66():
     code = request.form.get("code", "").replace("\r\n", "\n")
     lang = request.form.get("lang", "")
-    nick = request.form.get("nick", "").strip()
+    email = request.form.get("email", "").strip()
+    contest_consent = request.form.get("contest_consent", "").strip()
+    marketing_consent = request.form.get("marketing_consent", "").strip()
 
     if lang is None:
         return "", 400
 
-    if len(nick) not in range(1, 10 + 1):
-        return "", 400
+    regex = re.compile(r"\"?([-a-zA-Z0-9.`?{}]+@\w+\.\w+)\"?")
+    if re.match(regex, email) is None:
+        return "You have to provide valid email", 400
+
+    if contest_consent is '':
+        return "You have to agree to data processing for contest purposes", 400
+
+    contest_consent=True
+    if marketing_consent is '':
+        marketing_consent=False
+    else:
+        marketing_consent=True
+
+    nick = get_username_by_email(email)
 
     t0 = time()
     try:
@@ -144,11 +159,11 @@ def execute_order_66():
         )
         err_lines = err.error.splitlines(True)
         logger.warning(
-            "Fail[%r, %s] in %0.2f seconds, args: %r", nick, lang, execution_time, exp.args
+            "Fail[%r, %s] in %0.2f seconds, args: %r", email, lang, execution_time, exp.args
         )
         add_score_log(
             fail=True,
-            nick=nick,
+            email=email,
             lang=lang,
             execution_time=execution_time,
             code=code,
@@ -157,6 +172,7 @@ def execute_order_66():
             render_index(
                 code=code,
                 lang=lang,
+                email=email,
                 nick=nick,
                 is_done=False,
                 err=err,
@@ -167,19 +183,21 @@ def execute_order_66():
         )
     execution_time = time() - t0
     submit_score(
-        nick=nick,
+        email=email,
         lang=lang,
         code=code,
         execution_time=execution_time,
+        contest_consent=contest_consent,
+        marketing_consent=marketing_consent
     )
     add_score_log(
         fail=False,
-        nick=nick,
+        email=email,
         lang=lang,
         code=code,
         execution_time=execution_time,
     )
-    return render_index(code=code, lang=lang, nick=nick, is_done=True)
+    return render_index(code=code, lang=lang, email=email, nick=nick, is_done=True)
 
 
 @app.route('/<token>/dashboard', methods=['GET'])

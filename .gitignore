@@ -4,4 +4,4 @@ venv
 .env
 postgres-data/*
 *.swp
-
+.idea

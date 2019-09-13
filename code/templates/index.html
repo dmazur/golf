@@ -21,8 +21,11 @@
                     {% for key, lang_name in langs %}
                     <option value="{{key}}" {% if key == lang %}selected{% endif %}>{{ lang_name }}</option>
                     {% endfor %}
-                </select>
-                Nick <input type='text' name='nick' required maxlength=10 value='{{ nick }}' />
+                </select> <br />
+                E-mail <input type='text' name='email' required value='{{ email }}' /> <br />
+                Your auto assigned username is {{ nick }} <br />
+                <input type='checkbox' name='contest_consent' /> Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przeprowadzenia konkursu programistycznego przez Clearcode S.A. zgodnie z art. 6 ust. 1 lit. a Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE).<br />
+                <input type='checkbox' name='marketing_consent' /> Wyrażam zgodę na przetwarzanie moich danych osobowych przez Clearcode S.A. z siedzibą we Wrocławiu (50-073), przy ul. Św. Antoniego 2/4 dla celów rekrutacji.<br />
                 <input type='submit' value='Submit' />
                 <br/>
                 <span>Code ↓↓↓</span> <br/>
