@@ -88,6 +88,6 @@ def get_score_logs(page=1, limit=60):
 def get_username_by_email(email):
     hero = Hero.query.filter_by(email=email).first()
     if hero is None:
-        return 'not here yet'
+        return 'going to be generated after first successful attempt'
     else:
         return hero.nick

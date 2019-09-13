@@ -5,15 +5,9 @@
     </head>
     <body>
         <h1>{{title}}</h1>
-        <h2>Deadline
-            <span id="cd-start">in</span>
-            <span id="cd-days">X</span>d
-            <span id="cd-hours">X</span>h
-            <span id="cd-minutes">X</span>m
-            <span id="cd-seconds">X</span>s
-            <span id="cd-end"></span>
+        <h2>Deadline at 14:30
         </h2>
-        <div class='sld'>
+        <div>
             Howto? <a href="/howto">click here</a> <br />
             <form method="POST">
                 Select language
@@ -22,56 +16,38 @@
                     <option value="{{key}}" {% if key == lang %}selected{% endif %}>{{ lang_name }}</option>
                     {% endfor %}
                 </select> <br />
-                E-mail <input type='text' name='email' required value='{{ email }}' /> <br />
-                Your auto assigned username is {{ nick }} <br />
-                <input type='checkbox' name='contest_consent' /> Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przeprowadzenia konkursu programistycznego przez Clearcode S.A. zgodnie z art. 6 ust. 1 lit. a Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE).<br />
-                <input type='checkbox' name='marketing_consent' /> Wyrażam zgodę na przetwarzanie moich danych osobowych przez Clearcode S.A. z siedzibą we Wrocławiu (50-073), przy ul. Św. Antoniego 2/4 dla celów rekrutacji.<br />
-                <input type='submit' value='Submit' />
+                E-mail <input type="text" name="email" required value="{{ email }}" /> <br />
+                Your auto assigned username is <strong>{{ nick }}</strong> <br />
+                <input type="checkbox" required name="contest_consent" id="contest_consent" /> <label for="contest_consent">Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przeprowadzenia konkursu programistycznego przez Clearcode S.A. zgodnie z art. 6 ust. 1 lit. a Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE).</label><br />
+                <input type="checkbox" name="marketing_consent" id="marketing_consent" /> <label for="marketing_consent">Wyrażam zgodę na przetwarzanie moich danych osobowych przez Clearcode S.A. z siedzibą we Wrocławiu (50-073), przy ul. Św. Antoniego 2/4 dla celów rekrutacji.</label><br />
+                <input type="submit" value="Submit" />
                 <br/>
                 <span>Code ↓↓↓</span> <br/>
+
+                {% if is_done %}
+                    <span class="success">Good Job! Your auto assigned username is <strong>{{ nick }}</strong></span> <br />
+                {% endif %}
+                {% if err %}
+                    <span class="error">Error!</span> <br />
+                    {% if diff %}
+                        <span>stdout:</span> <br />
+                        <pre class="terminal">{% autoescape false %}{% for line in diff %}{{ line }}{% endfor %}{% endautoescape %}</pre>
+                        <br />
+                    {% endif %}
+                    {% if error_output %}
+                        <span>stderr:</span> <br />
+                        <pre class="terminal">{% autoescape false %}{% for line in error_output %}{{ line }}{% endfor %}{% endautoescape %}</pre>
+                        <br />
+                    {% endif %}
+                {% endif %}
                 <textarea name="code" rows="60" cols="100">{{ code }}</textarea>
             </form>
         </div>
-        <div class='pis'>
-            {% if is_done %}
-                <span class="success">Good Job!</span> <br />
-            {% endif %}
-            {% if err %}
-                <span class="error">Error!</span> <br />
-                {% if diff %}
-                    <span>stdout:</span> <br />
-                    <pre class="terminal">{% autoescape false %}{% for line in diff %}{{ line }}{% endfor %}{% endautoescape %}</pre>
-                    <br />
-                {% endif %}
-                {% if error_output %}
-                    <span>stderr:</span> <br />
-                    <pre class="terminal">{% autoescape false %}{% for line in error_output %}{{ line }}{% endfor %}{% endautoescape %}</pre>
-                    <br />
-                {% endif %}
-            {% else %}
-                <table>
-                    <caption>HIGHSCORE</caption>
-                    {% for hero in heroes %}
-                    <tr>
-                        <th class='index'>{{ loop.index }}</th>
-                        <td>{{ hero.nick }}</td>
-                        <th>{{ hero.lang }}</th>
-                        <td class="score">{{ hero.score }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
-        </div>
-        </form>
         <small style='clear: both; float: left'>
             &copy; <a href='https://github.com/firemark/'>firemark</a> 2019.
             Thx to <a href='https://github.com/inirudebwoy'>inirudebwoy</a>
             and <a href='https://github.com/dmazur'>dmazur</a>.
             Server runs on nsjail, uwsgi, python, flask, jinja2 and love &lt;3
         </small>
-        <script type="text/javascript" src="/stats/countdown.js"></script>
-        <script type="text/javascript">
-            initCountdown('{{end_date}}');
-        </script>
     </body>
 </html>

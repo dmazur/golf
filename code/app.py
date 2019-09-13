@@ -107,7 +107,9 @@ def stats(path):
 @app.route("/", methods=["GET"])
 @date_restricted
 def show_me_what_you_got():
-    return render_index()
+    return render_index(
+        nick='going to be generated after first successful attempt',
+    )
 
 
 @app.route("/howto")
@@ -168,6 +170,8 @@ def execute_order_66():
             execution_time=execution_time,
             code=code,
         )
+
+        nick = get_username_by_email(email)
         return (
             render_index(
                 code=code,
@@ -197,6 +201,7 @@ def execute_order_66():
         code=code,
         execution_time=execution_time,
     )
+    nick = get_username_by_email(email)
     return render_index(code=code, lang=lang, email=email, nick=nick, is_done=True)
 
 
