@@ -1,47 +1,71 @@
-<html>
-    <head>
-        <title>{{title}}</title>
-        <link rel="stylesheet" type="text/css" href="/stats/css.css" />
-    </head>
-    <body>
-        <h1>{{title}}</h1>
-        <h2>Deadline at 14:30
-        </h2>
-        <div>
-            Howto? <a href="/howto">click here</a> <br />
-            <form method="POST">
-                Select language
-                <select name="lang">
-                    {% for key, lang_name in langs %}
-                    <option value="{{key}}" {% if key == lang %}selected{% endif %}>{{ lang_name }}</option>
-                    {% endfor %}
-                </select> <br />
-                E-mail <input type="text" name="email" required value="{{ email }}" /> <br />
-                Your auto assigned username is <strong>{{ nick }}</strong> <br />
-                <input type="checkbox" required name="contest_consent" id="contest_consent" /> <label for="contest_consent">Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przeprowadzenia konkursu programistycznego przez Clearcode S.A. zgodnie z art. 6 ust. 1 lit. a Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE).</label><br />
-                <input type="checkbox" name="marketing_consent" id="marketing_consent" /> <label for="marketing_consent">Wyrażam zgodę na przetwarzanie moich danych osobowych przez Clearcode S.A. z siedzibą we Wrocławiu (50-073), przy ul. Św. Antoniego 2/4 dla celów rekrutacji.</label><br />
-                <input type="submit" value="Submit" />
-                <br/>
-                <span>Code ↓↓↓</span> <br/>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-                {% if is_done %}
-                    <span class="success">Good Job! Your auto assigned username is <strong>{{ nick }}</strong></span> <br />
-                {% endif %}
-                {% if err %}
-                    <span class="error">Error!</span> <br />
-                    {% if diff %}
-                        <span>stdout:</span> <br />
-                        <pre class="terminal">{% autoescape false %}{% for line in diff %}{{ line }}{% endfor %}{% endautoescape %}</pre>
-                        <br />
-                    {% endif %}
-                    {% if error_output %}
-                        <span>stderr:</span> <br />
-                        <pre class="terminal">{% autoescape false %}{% for line in error_output %}{{ line }}{% endfor %}{% endautoescape %}</pre>
-                        <br />
-                    {% endif %}
-                {% endif %}
-                <textarea name="code" rows="60" cols="100">{{ code }}</textarea>
-            </form>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>{{title}}</title>
+  </head>
+  <body>
+      <div class="container">
+          <h1>{{title}}</h1>
+          <h2>Deadline at 14:30</h2>
+
+           <div>
+               <p>Howto? <a href="/howto">click here</a></p>
+               <div>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="lang">Select language</label>
+                        <select class="form-control" name="lang" id="lang">
+                            {% for key, lang_name in langs %}
+                            <option value="{{key}}" {% if key == lang %}selected{% endif %}>{{ lang_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="text" class="form-control" id="email" name="email" required value="{{ email }}" /> <br />
+                    </div>
+                    <div class="form-group" style="padding-left: 30px">
+                        <input class="form-check-input" type="checkbox" required name="contest_consent" id="contest_consent" />
+                        <label class="form-check-label" for="contest_consent">
+                          Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przeprowadzenia konkursu programistycznego przez Clearcode S.A. zgodnie z art. 6 ust. 1 lit. a Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE).
+                        </label>
+                    </div>
+                    <div class="form-group" style="padding-left: 30px">
+                        <input class="form-check-input" type="checkbox" name="marketing_consent" id="marketing_consent" />
+                        <label class="form-check-label" for="marketing_consent">
+                            Wyrażam zgodę na przetwarzanie moich danych osobowych przez Clearcode S.A. z siedzibą we Wrocławiu (50-073), przy ul. Św. Antoniego 2/4 dla celów rekrutacji.
+                        </label>
+                    </div>
+
+                      <div class="form-group">
+                        <h4>Code</h4>
+                        {% if is_done %}
+                            <p class="success">Good Job! Your auto assigned username is <strong>{{ nick }}</strong></p>
+                        {% endif %}
+                        {% if err %}
+                            <p class="error">Error!</p>
+                            {% if diff %}
+                                <p>stdout:</p>
+                                <pre class="terminal">{% autoescape false %}{% for line in diff %}{{ line }}{% endfor %}{% endautoescape %}</pre>
+                            {% endif %}
+                            {% if error_output %}
+                                <p>stderr:</p>
+                                <pre class="terminal">{% autoescape false %}{% for line in error_output %}{{ line }}{% endfor %}{% endautoescape %}</pre>
+                            {% endif %}
+                        {% endif %}
+                        <textarea class="form-control" id="code" name="code" rows="10">{{ code }}</textarea>
+                      </div>
+                    <div class="form-group">
+                        <input type="submit" value="Submit" class="btn btn-primary" />
+                    </div>
+                </form>
         </div>
         <small style='clear: both; float: left'>
             &copy; <a href='https://github.com/firemark/'>firemark</a> 2019.
@@ -49,5 +73,11 @@
             and <a href='https://github.com/dmazur'>dmazur</a>.
             Server runs on nsjail, uwsgi, python, flask, jinja2 and love &lt;3
         </small>
-    </body>
+      </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
 </html>
